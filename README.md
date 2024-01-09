@@ -11,7 +11,7 @@ The `symptomcheckR` package can be used to analyze the performance of symptom ch
 ### Installation
 
 ```{r eval=FALSE}
-remotes::install_github("ma-kopka/symptomcheckR")
+install.packages("symptomcheckR")
 ```
 
 ### Usage
