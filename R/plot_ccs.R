@@ -1,6 +1,6 @@
 #' @title plot_ccs
 #'
-#' @description Plots the Capability Comparison Score (CCS) for multiple sympotm checkers
+#' @description Plots the Capability Comparison Score (CCS) for multiple symptom checkers
 #'
 #' @param input A dataframe containing the output of get_ccs()
 #'

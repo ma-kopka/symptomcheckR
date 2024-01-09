@@ -119,7 +119,7 @@ get_ccs_by_triage <- get_ccs_by_triage(
   triage = "Goldstandard_solution")
 ```
 
-Users can also get a performance overview for one or multple symptom checkers. To get the overview (and publication-ready figures) for a single symptom checker, you can use the following command:
+Users can also get a performance overview for one or multiple symptom checkers. To get the overview (and publication-ready figures) for a single symptom checker, you can use the following command:
 
 ```{r eval=FALSE}
 df_individual <- symptomcheckRdata %>%
