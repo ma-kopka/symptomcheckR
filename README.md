@@ -1,7 +1,3 @@
----
-output: github_document
----
-
 ## `symptomcheckR` package
 
 ### R package for easy analysis and visualization of symptom checker performance metrics
