@@ -11,6 +11,7 @@
 #' @return A ggplot object visualizing all performance metrics for one symptom checker
 #' @examples
 #' data(symptomcheckRdata)
+#' \dontrun{
 #' performance_plot <- plot_performance_single(
 #'   data = symptomcheckRdata,
 #'   triagelevel_correct = "Goldstandard_solution",
@@ -18,6 +19,7 @@
 #'   order_triagelevel = c("Emergency", "Non-Emergency", "Self-care"),
 #'   vector_not_entered = c(NA)
 #'   )
+#' }
 #'
 #' @export
 #' @import dplyr

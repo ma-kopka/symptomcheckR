@@ -29,7 +29,4 @@ head(symptomcheckRdata)
 \references{
 This data set was created by Schmieding et al.: https://doi.org/10.5281/zenodo.6054092
 }
-\keyword{accuracy,}
-\keyword{checker}
-\keyword{performance}
-\keyword{symptom}
+\keyword{symptom-checker}

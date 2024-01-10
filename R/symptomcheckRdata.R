@@ -15,7 +15,7 @@
 #'  \item{Correct_Triage_Advice_provided_from_app}{A Boolean whether the app provided the correct advice)}
 #' }
 #' @references This data set was created by Schmieding et al.: https://doi.org/10.5281/zenodo.6054092
-#' @keywords symptom checker accuracy, symptom checker performance
+#' @keywords symptom-checker
 #' @examples
 #'
 #' data(symptomcheckRdata)

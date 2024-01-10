@@ -13,7 +13,7 @@ plot_ccs(input)
 A ggplot object visualizing the CCS for multiple symptom checkers
 }
 \description{
-Plots the Capability Comparison Score (CCS) for multiple sympotm checkers
+Plots the Capability Comparison Score (CCS) for multiple symptom checkers
 }
 \examples{
 data(symptomcheckRdata)
