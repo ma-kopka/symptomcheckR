@@ -14,7 +14,6 @@
 #' @return A ggplot object visualizing all performance metrics for all symptom checkers in dataframe
 #' @examples
 #' data(symptomcheckRdata)
-#' \dontrun{
 #' performance_plot <- plot_performance_multiple(
 #'   data = symptomcheckRdata,
 #'   triagelevel_correct = "Goldstandard_solution",
@@ -24,7 +23,6 @@
 #'   vignettes = "Vignette_id",
 #'   apps = "App_name"
 #'   )
-#' }
 #'
 #' @export
 #' @import dplyr

@@ -6,7 +6,7 @@
 
 <!-- badges: end -->
 
-The `symptomcheckR` package can be used to analyze the performance of symptom checkers across various metrics. Since many studies report different metrics, we aimed to standardize performance reporting by developing more reliable metrics that future studies should include. They can be found in [this study](https://doi.org/10.1177/20552076231194929). To make it easier for researchers and other stakeholders to report these metrics and compare different symptom checkers, we developed this package.
+The `symptomcheckR` package can be used to analyze the performance of symptom checkers across various metrics. Since many studies report different metrics, we aimed to standardize performance reporting by developing more reliable metrics that future studies should include. They can be found in Kopka et al. (2023) <doi:10.1177/20552076231194929>. To make it easier for researchers and other stakeholders to report these metrics and compare different symptom checkers, we developed this package.
 
 ### Installation
 

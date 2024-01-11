@@ -1,7 +1,7 @@
 Type: Package
 Package: symptomcheckR
 Title: Analyzing and Visualizing Symptom Checker Performance
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
     person("Marvin", "Kopka", , "marvin.kopka@tu-berlin.de", role = c("cre", "aut"),
            comment = c(ORCID = "0000-0003-3848-1471")),
@@ -16,7 +16,8 @@ Description: Easily analyze and visualize the performance of symptom
     the performance of single symptom checkers or the performance of
     multiple symptom checkers. It can be used to easily compare these
     symptom checkers across several metrics to gain an understanding of
-    their strengths and weaknesses.
+    their strengths and weaknesses. The metrics are developed in 
+    Kopka et al. (2023) <doi:10.1177/20552076231194929>.
 License: GPL-3
 URL: https://github.com/ma-kopka/symptomcheckR
 BugReports: https://github.com/ma-kopka/symptomcheckR/issues
