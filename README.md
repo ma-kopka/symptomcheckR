@@ -1,12 +1,14 @@
-## `symptomcheckR` package
+# `symptomcheckR` package
 
-### R package for easy analysis and visualization of symptom checker performance metrics
+### Easy analysis and visualization of symptom checker performance metrics
 
 <!-- badges: start -->
 
+[![CRAN status](https://www.r-pkg.org/badges/version/symptomcheckR)](https://CRAN.R-project.org/package=symptomcheckR) [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable) [![R-CMD-check](https://github.com/ma-kopka/symptomcheckR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ma-kopka/symptomcheckR/actions/workflows/R-CMD-check.yaml)
+
 <!-- badges: end -->
 
-The `symptomcheckR` package can be used to analyze the performance of symptom checkers across various metrics. Since many studies report different metrics, we aimed to standardize performance reporting by developing more reliable metrics that future studies should include. They can be found in Kopka et al. (2023) <doi:10.1177/20552076231194929>. To make it easier for researchers and other stakeholders to report these metrics and compare different symptom checkers, we developed this package.
+The `symptomcheckR` package can be used to analyze the performance of symptom checkers across various metrics. Since many studies report different metrics, we aimed to standardize performance reporting by developing more reliable metrics that future studies should include. They can be found in [Kopka et al. (2023)](https://doi.org/10.1177/20552076231194929). To make it easier for researchers and other stakeholders to report these metrics and compare different symptom checkers, we developed this package.
 
 ### Installation
 
@@ -19,7 +21,7 @@ install.packages("symptomcheckR")
 First, load the package:
 
 ```{r eval=FALSE}
-library("symptomcheckR")
+library(symptomcheckR)
 ```
 
 Now you can load the data set to test the commands:
@@ -33,9 +35,10 @@ This will load the data set. You can run all commands from this package now. The
 Accuracy:
 
 ```{r eval=FALSE}
-accuracy_value <- get_accuracy(symptomcheckRdata, 
-                               correct = "Correct_Triage_Advice_provided_from_app", 
-                               apps = "App_name")
+accuracy_value <- get_accuracy(
+  symptomcheckRdata, 
+  correct = "Correct_Triage_Advice_provided_from_app", 
+  apps = "App_name")
 plot_accuracy(accuracy_value)
 ```
 
@@ -145,3 +148,9 @@ plot_performance_multiple(
   vignettes = "Vignette_id",
   apps = "App_name")
 ```
+
+### Links
+
+-   [Contact the maintainer](https://de.linkedin.com/in/marvin-kopka-9b79171b5)
+
+-   [Department of Ergonomics at TU Berlin](https://www.tu.berlin/en/awb)
