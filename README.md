@@ -151,6 +151,7 @@ plot_performance_multiple(
 
 ### Links
 
+-   [Development and explanation of all metrics](https://doi.org/10.1177/20552076231194929)
 -   [Contact the maintainer](https://de.linkedin.com/in/marvin-kopka-9b79171b5)
 
 -   [Department of Ergonomics at TU Berlin](https://www.tu.berlin/en/awb)
