@@ -1,7 +1,7 @@
 Type: Package
 Package: symptomcheckR
 Title: Analyzing and Visualizing Symptom Checker Performance
-Version: 0.1.2
+Version: 0.1.3
 Authors@R: c(
     person("Marvin", "Kopka", , "marvin.kopka@tu-berlin.de", role = c("cre", "aut"),
            comment = c(ORCID = "0000-0003-3848-1471")),

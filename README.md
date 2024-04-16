@@ -4,7 +4,7 @@
 
 <!-- badges: start -->
 
-[![CRAN status](https://www.r-pkg.org/badges/version/symptomcheckR)](https://CRAN.R-project.org/package=symptomcheckR) [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable) [![R-CMD-check](https://github.com/ma-kopka/symptomcheckR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ma-kopka/symptomcheckR/actions/workflows/R-CMD-check.yaml) [![](https://cranlogs.r-pkg.org/badges/grand-total/symptomcheckR)](https://cran.rstudio.com/web/packages/symptomcheckR/index.html)
+[![CRAN status](https://www.r-pkg.org/badges/version/symptomcheckR)](https://CRAN.R-project.org/package=symptomcheckR) [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable) [![R-CMD-check](https://github.com/ma-kopka/symptomcheckR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ma-kopka/symptomcheckR/actions/workflows/R-CMD-check.yaml) [![](https://cranlogs.r-pkg.org/badges/grand-total/symptomcheckR)](https://cran.r-project.org/package=symptomcheckR)
 
 
 <!-- badges: end -->

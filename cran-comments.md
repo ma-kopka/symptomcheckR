@@ -1,4 +1,4 @@
-# CRAN Submission Comments - symptomcheckR Version 0.1.2
+# CRAN Submission Comments - symptomcheckR Version 0.1.3
 
 ## Resubmission
 
