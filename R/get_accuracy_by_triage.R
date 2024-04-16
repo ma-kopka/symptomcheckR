@@ -6,6 +6,7 @@
 #' @param correct A string indicating the column name storing if the symptom checker solved the case (TRUE or FALSE)
 #' @param triagelevel A string indicating the column name storing the correct triage solutions
 #' @param apps A string indicating the column name storing the app names (optional)
+#' @param CI A Boolean (TRUE or FALSE) indicating whether 95\% confidence intervals should be output (optional)
 #'
 #' @return A data frame object containing the accuracy on each triage level (of one or multiple symptom checkers) or the accuracy of multiple symptom checkers. Use the apps argument to calculate this metric for multiple symptom checkers.
 #' @examples
@@ -14,14 +15,17 @@
 #'   data = symptomcheckRdata,
 #'   correct = "Correct_Triage_Advice_provided_from_app",
 #'   triagelevel = "Goldstandard_solution",
-#'   apps = "App_name"
+#'   apps = "App_name",
+#'   CI = TRUE
 #'   )
 #' @export
 #' @import dplyr
 
-get_accuracy_by_triage <- function(data, correct, triagelevel,  apps = NULL) {
+get_accuracy_by_triage <- function(data, correct, triagelevel,  apps = NULL, CI = FALSE) {
   item_difficulty <- NULL
   ccs <- NULL
+  accuracy <- NULL
+  qnorm <- NULL
   # Code input for handling with dplyr
   correct_sym <- sym(correct)
   triagelevel_sym <- sym(triagelevel)
@@ -58,22 +62,68 @@ get_accuracy_by_triage <- function(data, correct, triagelevel,  apps = NULL) {
       message("Only one app provided, calculating accuracy for this app")
     }
 
+    if (CI == TRUE) {
     # Group by triage level and calculate accuracy for each symptom checker
     output <- data %>%
       filter(!is.na(!!triagelevel_sym)) %>%
       filter(!is.na(!!correct_sym)) %>%
       group_by(!!apps_sym, !!triagelevel_sym) %>%
-      summarise(accuracy = mean(!!correct_sym, na.rm = TRUE))
+      summarise(accuracy = mean(!!correct_sym, na.rm = TRUE),
+                n = n()) %>%
+      rowwise() %>%
+      mutate(
+        lower_ci = ifelse(CI, accuracy - qnorm(0.975) * sqrt((accuracy * (1 - accuracy))/n), NA_real_),
+        upper_ci = ifelse(CI, accuracy + qnorm(0.975) * sqrt((accuracy * (1 - accuracy))/n), NA_real_)
+      ) %>%
+      mutate(lower_ci = case_when(
+        lower_ci < 0 ~ 0,
+        lower_ci > 1 ~ 1,
+        TRUE ~ lower_ci),
+        upper_ci = case_when(
+          upper_ci < 0 ~ 0,
+          upper_ci > 1 ~ 1,
+          TRUE ~ lower_ci)) %>%
+      select(-n)
+    } else {
+      output <- data %>%
+        filter(!is.na(!!triagelevel_sym)) %>%
+        filter(!is.na(!!correct_sym)) %>%
+        group_by(!!apps_sym, !!triagelevel_sym) %>%
+        summarise(accuracy = mean(!!correct_sym, na.rm = TRUE))
+    }
   } else {
     # Output message that accuracy is calculated across dataset
     message("No apps vector specified, calculating accuracy across the entire dataset.")
+    if (CI == TRUE) {
+      output <- data %>%
+        filter(!is.na(!!triagelevel_sym)) %>%
+        filter(!is.na(!!correct_sym)) %>%
+        group_by(!!triagelevel_sym) %>%
+        summarise(accuracy = mean(!!correct_sym, na.rm = TRUE),
+                  n = n()) %>%
+        rowwise() %>%
+        mutate(
+          lower_ci = ifelse(CI, accuracy - qnorm(0.975) * sqrt((accuracy * (1 - accuracy))/n), NA_real_),
+          upper_ci = ifelse(CI, accuracy + qnorm(0.975) * sqrt((accuracy * (1 - accuracy))/n), NA_real_)
+        ) %>%
+        mutate(lower_ci = case_when(
+          lower_ci < 0 ~ 0,
+          lower_ci > 1 ~ 1,
+          TRUE ~ lower_ci),
+          upper_ci = case_when(
+            upper_ci < 0 ~ 0,
+            upper_ci > 1 ~ 1,
+            TRUE ~ lower_ci)) %>%
+        select(-n)
 
+    } else {
     # Group by triage level and calculate accuracy
-    output <- data %>%
-      filter(!is.na(!!triagelevel_sym)) %>%
-      filter(!is.na(!!correct_sym)) %>%
-      group_by(!!triagelevel_sym) %>%
-      summarise(accuracy = mean(!!correct_sym, na.rm = TRUE))
+      output <- data %>%
+        filter(!is.na(!!triagelevel_sym)) %>%
+        filter(!is.na(!!correct_sym)) %>%
+        group_by(!!triagelevel_sym) %>%
+        summarise(accuracy = mean(!!correct_sym, na.rm = TRUE))
+    }
   }
 
   return(output)

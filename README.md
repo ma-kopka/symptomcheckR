@@ -101,6 +101,8 @@ get_item_difficulty(
 
 ```
 
+For all of these commands, you can set CI to TRUE (by passing the argument CI == TRUE to the corresponding function) to obtain 95% confidence intervals. 
+
 Capability Comparison Score:
 
 ```{r eval=FALSE}
@@ -148,6 +150,16 @@ plot_performance_multiple(
   vector_not_entered = c(NA),
   vignettes = "Vignette_id",
   apps = "App_name")
+```
+
+To calculate the inter-rater reliability (if multiple inputters were involved), you can use the following command:
+
+```{r eval=FALSE}
+get_irr(
+   data = df,
+   ratings = c("datarater1", "datarater2", "datarater3"),
+   order_triagelevel = c("Emergency", "Non-Emergency", "Self-care"),
+   )
 ```
 
 ### Links

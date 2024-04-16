@@ -9,7 +9,8 @@ get_safety_of_advice(
   triagelevel_correct,
   triagelevel_advice,
   order_triagelevel,
-  apps = NULL
+  apps = NULL,
+  CI = FALSE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ get_safety_of_advice(
 \item{order_triagelevel}{A vector indicating the order of triage levels. The triage level with highest urgency should be the first value and the triage level with lowest urgency the last value.}
 
 \item{apps}{A string indicating the column name storing the app names (optional)}
+
+\item{CI}{A Boolean (TRUE or FALSE) indicating whether 95\% confidence intervals should be output (optional)}
 }
 \value{
 A list containing both a raw number and the percentage of safe advice for one or multiple symptom checkers
@@ -31,11 +34,12 @@ Calculates the safety of advice for one or multiple symptom checkers
 }
 \examples{
 data(symptomcheckRdata)
-get_safety_of_advice <- get_safety_of_advice(
+safety_of_advice <- get_safety_of_advice(
   data = symptomcheckRdata,
   triagelevel_correct = "Goldstandard_solution",
   triagelevel_advice = "Triage_advice_from_app",
   order_triagelevel = c("Emergency", "Non-Emergency", "Self-care"),
-  apps = "App_name"
+  apps = "App_name",
+  CI = TRUE
   )
 }

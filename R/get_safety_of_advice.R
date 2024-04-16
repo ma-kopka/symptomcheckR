@@ -7,16 +7,18 @@
 #' @param triagelevel_advice A string indicating the column name storing the recommendation of a symptom checker for a case
 #' @param order_triagelevel A vector indicating the order of triage levels. The triage level with highest urgency should be the first value and the triage level with lowest urgency the last value.
 #' @param apps A string indicating the column name storing the app names (optional)
+#' @param CI A Boolean (TRUE or FALSE) indicating whether 95\% confidence intervals should be output (optional)
 #'
 #' @return A list containing both a raw number and the percentage of safe advice for one or multiple symptom checkers
 #' @examples
 #' data(symptomcheckRdata)
-#' get_safety_of_advice <- get_safety_of_advice(
+#' safety_of_advice <- get_safety_of_advice(
 #'   data = symptomcheckRdata,
 #'   triagelevel_correct = "Goldstandard_solution",
 #'   triagelevel_advice = "Triage_advice_from_app",
 #'   order_triagelevel = c("Emergency", "Non-Emergency", "Self-care"),
-#'   apps = "App_name"
+#'   apps = "App_name",
+#'   CI = TRUE
 #'   )
 
 #' @export
@@ -24,8 +26,12 @@
 #' @importFrom stats setNames
 #' @importFrom stats na.omit
 
-get_safety_of_advice <- function(data, triagelevel_correct, triagelevel_advice, order_triagelevel, apps = NULL) {
+get_safety_of_advice <- function(data, triagelevel_correct, triagelevel_advice, order_triagelevel, apps = NULL, CI = FALSE) {
   safety <- NULL
+  safety_percentage <- NULL
+  qnorm <- NULL
+  lower_ci <- NULL
+  upper_ci <- NULL
   # Handle errors
   if (!is.data.frame(data)) {
     stop("The first argument must be a data frame.")
@@ -134,6 +140,33 @@ get_safety_of_advice <- function(data, triagelevel_correct, triagelevel_advice, 
       ungroup()
 
     # Obtain percentage of safe advice
+    if (CI == TRUE) {
+      percentage <- data %>%
+        group_by(!!apps_sym, safety) %>%
+        count() %>%
+        ungroup() %>%
+        group_by(!!apps_sym) %>%
+        summarise(safety_percentage = sum(n[safety == "safe advice"]) / sum(n),
+                  n = sum(n)) %>%
+        ungroup() %>%
+        rowwise() %>%
+        mutate(
+          lower_ci = ifelse(CI, safety_percentage - qnorm(0.975) * sqrt((safety_percentage * (1 - safety_percentage))/n), NA_real_),
+          upper_ci = ifelse(CI, safety_percentage + qnorm(0.975) * sqrt((safety_percentage * (1 - safety_percentage))/n), NA_real_)
+        ) %>%
+        mutate(safety_percentage = safety_percentage*100,
+               lower_ci = lower_ci*100,
+               upper_ci = upper_ci*100) %>%
+        mutate(lower_ci = case_when(
+          lower_ci < 0 ~ 0,
+          lower_ci > 100 ~ 100,
+          TRUE ~ lower_ci),
+          upper_ci = case_when(
+            upper_ci < 0 ~ 0,
+            upper_ci > 100 ~ 100,
+            TRUE ~ lower_ci)) %>%
+        select(-n)
+    } else {
     percentage <- data %>%
       group_by(!!apps_sym, safety) %>%
       count() %>%
@@ -141,6 +174,7 @@ get_safety_of_advice <- function(data, triagelevel_correct, triagelevel_advice, 
       group_by(!!apps_sym) %>%
       summarise(safety_percentage = sum(n[safety == "safe advice"]) / sum(n) * 100) %>%
       ungroup()
+    }
 
 
   } else {
@@ -158,11 +192,38 @@ get_safety_of_advice <- function(data, triagelevel_correct, triagelevel_advice, 
       count()
 
     # Obtain percentage of safe advice
+    if (CI == TRUE) {
+      percentage <- data %>%
+        group_by(safety) %>%
+        count() %>%
+        ungroup() %>%
+        summarise(safety_percentage = sum(n[safety == "safe advice"]) / sum(n),
+                  n = sum(n)) %>%
+        ungroup() %>%
+        rowwise() %>%
+        mutate(
+          lower_ci = ifelse(CI, safety_percentage - qnorm(0.975) * sqrt((safety_percentage * (1 - safety_percentage))/n), NA_real_),
+          upper_ci = ifelse(CI, safety_percentage + qnorm(0.975) * sqrt((safety_percentage * (1 - safety_percentage))/n), NA_real_)
+        ) %>%
+        mutate(safety_percentage = safety_percentage*100,
+               lower_ci = lower_ci*100,
+               upper_ci = upper_ci*100) %>%
+        mutate(lower_ci = case_when(
+          lower_ci < 0 ~ 0,
+          lower_ci > 100 ~ 100,
+          TRUE ~ lower_ci),
+          upper_ci = case_when(
+            upper_ci < 0 ~ 0,
+            upper_ci > 100 ~ 100,
+            TRUE ~ lower_ci)) %>%
+        select(-n)
+    } else {
     percentage <- data %>%
       group_by(safety) %>%
       count() %>%
       ungroup() %>%
       summarise(safety_percentage = sum(n[safety == "safe advice"]) / sum(n) * 100)
+    }
   }
   # Output raw numbers and percentage as a list
   output_combination <- list(raw_numbers = raw_numbers, percentage = percentage)

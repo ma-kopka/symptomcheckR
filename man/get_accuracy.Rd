@@ -4,7 +4,7 @@
 \alias{get_accuracy}
 \title{get_accuracy}
 \usage{
-get_accuracy(data, correct, apps = NULL)
+get_accuracy(data, correct, apps = NULL, CI = FALSE)
 }
 \arguments{
 \item{data}{A dataframe}
@@ -12,6 +12,8 @@ get_accuracy(data, correct, apps = NULL)
 \item{correct}{A string indicating the column name storing if the symptom checker solved the case (TRUE or FALSE)}
 
 \item{apps}{A string indicating the column name storing the app names (optional)}
+
+\item{CI}{A Boolean (TRUE or FALSE) indicating whether 95\% confidence intervals should be output (optional)}
 }
 \value{
 A data frame object containing the accuracy of the symptom checker or the accuracy of multiple symptom checkers. Use the apps argument to calculate this metric for multiple symptom checkers.
@@ -24,6 +26,7 @@ data(symptomcheckRdata)
 accuracy <- get_accuracy(
   data = symptomcheckRdata,
   correct = "Correct_Triage_Advice_provided_from_app",
-  apps = "App_name"
+  apps = "App_name",
+  CI = TRUE
   )
 }

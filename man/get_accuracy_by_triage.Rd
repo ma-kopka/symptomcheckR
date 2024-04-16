@@ -4,7 +4,7 @@
 \alias{get_accuracy_by_triage}
 \title{get_accuracy_by_triage}
 \usage{
-get_accuracy_by_triage(data, correct, triagelevel, apps = NULL)
+get_accuracy_by_triage(data, correct, triagelevel, apps = NULL, CI = FALSE)
 }
 \arguments{
 \item{data}{A dataframe}
@@ -14,6 +14,8 @@ get_accuracy_by_triage(data, correct, triagelevel, apps = NULL)
 \item{triagelevel}{A string indicating the column name storing the correct triage solutions}
 
 \item{apps}{A string indicating the column name storing the app names (optional)}
+
+\item{CI}{A Boolean (TRUE or FALSE) indicating whether 95\% confidence intervals should be output (optional)}
 }
 \value{
 A data frame object containing the accuracy on each triage level (of one or multiple symptom checkers) or the accuracy of multiple symptom checkers. Use the apps argument to calculate this metric for multiple symptom checkers.
@@ -27,6 +29,7 @@ accuracy_by_triage <- get_accuracy_by_triage(
   data = symptomcheckRdata,
   correct = "Correct_Triage_Advice_provided_from_app",
   triagelevel = "Goldstandard_solution",
-  apps = "App_name"
+  apps = "App_name",
+  CI = TRUE
   )
 }

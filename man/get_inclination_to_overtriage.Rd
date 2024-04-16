@@ -9,7 +9,8 @@ get_inclination_to_overtriage(
   triagelevel_correct,
   triagelevel_advice,
   order_triagelevel,
-  apps = NULL
+  apps = NULL,
+  CI = FALSE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ get_inclination_to_overtriage(
 \item{order_triagelevel}{A vector indicating the order of triage levels. The triage level with highest urgency should be the first value and the triage level with lowest urgency the last value.}
 
 \item{apps}{A string indicating the column name storing the app names (optional)}
+
+\item{CI}{A Boolean (TRUE or FALSE) indicating whether 95\% confidence intervals should be output (optional)}
 }
 \value{
 A list containing both a raw number and the percentage of the inclination to overtriage for one or multiple symptom checkers
@@ -36,6 +39,7 @@ inclination_to_overtriage <- get_inclination_to_overtriage(
    triagelevel_correct = "Goldstandard_solution",
    triagelevel_advice = "Triage_advice_from_app",
    order_triagelevel = c("Emergency", "Non-Emergency", "Self-care"),
-   apps = "App_name"
+   apps = "App_name",
+   CI = TRUE
    )
 }

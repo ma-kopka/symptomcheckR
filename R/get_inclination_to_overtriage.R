@@ -7,6 +7,7 @@
 #' @param triagelevel_advice A string indicating the column name storing the recommendation of a symptom checker for a case
 #' @param order_triagelevel A vector indicating the order of triage levels. The triage level with highest urgency should be the first value and the triage level with lowest urgency the last value.
 #' @param apps A string indicating the column name storing the app names (optional)
+#' @param CI A Boolean (TRUE or FALSE) indicating whether 95\% confidence intervals should be output (optional)
 #'
 #' @return A list containing both a raw number and the percentage of the inclination to overtriage for one or multiple symptom checkers
 #' @examples
@@ -16,7 +17,8 @@
 #'    triagelevel_correct = "Goldstandard_solution",
 #'    triagelevel_advice = "Triage_advice_from_app",
 #'    order_triagelevel = c("Emergency", "Non-Emergency", "Self-care"),
-#'    apps = "App_name"
+#'    apps = "App_name",
+#'    CI = TRUE
 #'    )
 
 #' @export
@@ -24,9 +26,13 @@
 #' @importFrom stats setNames
 #' @importFrom stats na.omit
 
-get_inclination_to_overtriage <- function(data, triagelevel_correct, triagelevel_advice, order_triagelevel, apps = NULL) {
+get_inclination_to_overtriage <- function(data, triagelevel_correct, triagelevel_advice, order_triagelevel, apps = NULL, CI = FALSE) {
   item_difficulty <- NULL
   overtriage_undertriage <- NULL
+  inclination_to_overtriage_percentage <- NULL
+  qnorm <- NULL
+  lower_ci <- NULL
+  upper_ci <- NULL
    # Handle errors
   if (!is.data.frame(data)) {
     stop("The first argument must be a data frame.")
@@ -136,13 +142,41 @@ get_inclination_to_overtriage <- function(data, triagelevel_correct, triagelevel
       ungroup()
 
     # Obtain percentage on inclination to overtriage
-    percentage <- data %>%
+    if (CI == TRUE) {
+      percentage <- data %>%
+        group_by(!!apps_sym, overtriage_undertriage) %>%
+        count() %>%
+        ungroup() %>%
+        group_by(!!apps_sym) %>%
+        summarise(inclination_to_overtriage_percentage = sum(n[overtriage_undertriage == "overtriage"]) / sum(n),
+                  n = sum(n)) %>%
+        ungroup() %>%
+        rowwise() %>%
+        mutate(
+          lower_ci = ifelse(CI, inclination_to_overtriage_percentage - qnorm(0.975) * sqrt((inclination_to_overtriage_percentage * (1 - inclination_to_overtriage_percentage))/n), NA_real_),
+          upper_ci = ifelse(CI, inclination_to_overtriage_percentage + qnorm(0.975) * sqrt((inclination_to_overtriage_percentage * (1 - inclination_to_overtriage_percentage))/n), NA_real_)
+        ) %>%
+        mutate(inclination_to_overtriage_percentage = inclination_to_overtriage_percentage*100,
+               lower_ci = lower_ci*100,
+               upper_ci = upper_ci*100) %>%
+        mutate(lower_ci = case_when(
+          lower_ci < 0 ~ 0,
+          lower_ci > 100 ~ 100,
+          TRUE ~ lower_ci),
+          upper_ci = case_when(
+            upper_ci < 0 ~ 0,
+            upper_ci > 100 ~ 100,
+            TRUE ~ lower_ci)) %>%
+        select(-n)
+    } else {
+      percentage <- data %>%
       group_by(!!apps_sym, overtriage_undertriage) %>%
       count() %>%
       ungroup() %>%
       group_by(!!apps_sym) %>%
       summarise(inclination_to_overtriage_percentage = sum(n[overtriage_undertriage == "overtriage"]) / sum(n) * 100) %>%
       ungroup()
+      }
 
 
   } else {
@@ -161,11 +195,38 @@ get_inclination_to_overtriage <- function(data, triagelevel_correct, triagelevel
       count()
 
     # Obtain percentage on inclination to overtriage
+    if (CI == TRUE) {
+      percentage <- data %>%
+        group_by(overtriage_undertriage) %>%
+        count() %>%
+        ungroup() %>%
+        summarise(inclination_to_overtriage_percentage = sum(n[overtriage_undertriage == "overtriage"]) / sum(n),
+                  n = sum(n)) %>%
+        ungroup() %>%
+        rowwise() %>%
+        mutate(
+          lower_ci = ifelse(CI, inclination_to_overtriage_percentage - qnorm(0.975) * sqrt((inclination_to_overtriage_percentage * (1 - inclination_to_overtriage_percentage))/n), NA_real_),
+          upper_ci = ifelse(CI, inclination_to_overtriage_percentage + qnorm(0.975) * sqrt((inclination_to_overtriage_percentage * (1 - inclination_to_overtriage_percentage))/n), NA_real_)
+        ) %>%
+        mutate(inclination_to_overtriage_percentage = inclination_to_overtriage_percentage*100,
+               lower_ci = lower_ci*100,
+               upper_ci = upper_ci*100) %>%
+        mutate(lower_ci = case_when(
+          lower_ci < 0 ~ 0,
+          lower_ci > 100 ~ 100,
+          TRUE ~ lower_ci),
+          upper_ci = case_when(
+            upper_ci < 0 ~ 0,
+            upper_ci > 100 ~ 100,
+            TRUE ~ lower_ci)) %>%
+        select(-n)
+    } else {
     percentage <- data %>%
       group_by(overtriage_undertriage) %>%
       count() %>%
       ungroup() %>%
       summarise(inclination_to_overtriage_percentage = sum(n[overtriage_undertriage == "overtriage"]) / sum(n) * 100)
+    }
   }
   # Output raw numbers and percentage as a list
   output_combination <- list(raw_numbers = raw_numbers, percentage = percentage)

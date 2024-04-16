@@ -8,7 +8,8 @@ get_comprehensiveness(
   data,
   triagelevel_advice,
   vector_not_entered,
-  apps = NULL
+  apps = NULL,
+  CI = FALSE
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ get_comprehensiveness(
 \item{vector_not_entered}{A vector indicating the values in which missing values are coded (e.g., as NA or a specified value such as -99)}
 
 \item{apps}{A string indicating the column name storing the app names}
+
+\item{CI}{A Boolean (TRUE or FALSE) indicating whether 95\% confidence intervals should be output (optional)}
 }
 \value{
 A list containing both a raw number and the percentage of comprehensiveness for one or multiple symptom checkers
@@ -32,7 +35,8 @@ comprehensiveness <- get_comprehensiveness(
   data = symptomcheckRdata,
   triagelevel_advice = "Triage_advice_from_app",
   vector_not_entered = c(NA),
-  apps = "App_name"
+  apps = "App_name",
+  CI = TRUE
   )
 
 }
